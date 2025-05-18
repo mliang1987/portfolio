@@ -1,21 +1,19 @@
 name: Deploy to GitHub Pages
-
 on:
   push:
     branches:
       - main
-
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Adding Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 22
 
       - name: Install Dependencies
         run: npm install
@@ -24,4 +22,8 @@ jobs:
         run: npm run build
 
       - name: Deploy to GitHub Pages
-        run: npx angular-cli-ghpages --dir=dist/portfolio
+        run: |
+          npx angular-cli-ghpages --dir=dist/portfolio
+        env:
+          CI: true
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
