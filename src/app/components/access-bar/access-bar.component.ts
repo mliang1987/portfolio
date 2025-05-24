@@ -41,7 +41,7 @@ export class AccessBarComponent {
         items: this.getProjectsItems()
       },
       {
-        label: 'Resume',
+        label: 'Résumé',
         icon: 'pi pi-file',
         routerLink: ['/resume']
       },

@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { GithubService } from '../../services/github.service';
+import { RouterModule } from '@angular/router';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [CardModule, RouterModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
