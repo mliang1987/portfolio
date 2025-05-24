@@ -5,22 +5,31 @@ import { GitHubRepo } from '../../../models/github.projects';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
+import { DividerModule } from 'primeng/divider';
+import { CommonModule } from '@angular/common';
+import { Tabs, TabsModule } from 'primeng/tabs';
 
 @Component({
   selector: 'app-all-projects',
-  imports: [PanelModule, CardModule, ButtonModule, RouterModule],
+  imports: [CommonModule, PanelModule, CardModule, ButtonModule, RouterModule, DividerModule, TabsModule],
   templateUrl: './all-projects.component.html',
   styleUrl: './all-projects.component.css'
 })
 export class AllProjectsComponent {
-  projects: Signal<GitHubRepo[]>;
-  headerImageUrl: Signal<Map<number, string | null>>;
+  algProjects: Signal<GitHubRepo[]>;
+  eduProjects: Signal<GitHubRepo[]>;
+  miscProjects: Signal<GitHubRepo[]>;
+  headerImageUrlsMap: Signal<Map<number, string | null>>;
 
   constructor(private projectsService: ProjectsService) {
-    this.projects = computed(() => this.projectsService.repositories());
-    this.headerImageUrl = computed(() => {
+    this.algProjects = computed(() => this.projectsService.repositories().filter((repo) => repo.topics?.includes('algorithms')));
+    this.eduProjects = computed(() => this.projectsService.repositories().filter((repo) => repo.topics?.includes('education')));
+    this.miscProjects = computed(() =>
+      this.projectsService.repositories().filter((repo) => !repo.topics?.includes('algorithms') && !repo.topics?.includes('education'))
+    );
+    this.headerImageUrlsMap = computed(() => {
       const headerImageMap = new Map<number, string | null>();
-      this.projects().forEach((project) => {
+      this.projectsService.repositories().forEach((project) => {
         const headerImage = this.getContentHeader(project.html_url);
         if (headerImage) {
           headerImageMap.set(project.id, headerImage);
