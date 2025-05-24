@@ -1,7 +1,6 @@
 .button-container {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
 }
 
 .projects-container {
@@ -18,4 +17,5 @@
   object-fit: cover;
   object-position: center;
   border-radius: 20px;
+  background-color: black;
 }
