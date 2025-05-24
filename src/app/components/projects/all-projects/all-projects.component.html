@@ -1,0 +1,14 @@
+<div class="projects-container">
+  @for ( project of projects(); track project.id ) {
+  <p-card [style]="{ width: '20rem', overflow: 'hidden' }">
+    <ng-template #title> {{ project.name }} </ng-template>
+    <ng-template #subtitle> {{ project.description }} </ng-template>
+    <ng-template #footer>
+      <div class="button-container">
+        <p-button routerLink="/projects/{{ project.id }}"> Go to Project </p-button>
+        <a href="{{ project.html_url }}" class="p-button font-bold" target="_blank" rel="noopener noreferrer"> View on GitHub </a>
+      </div>
+    </ng-template>
+  </p-card>
+  }
+</div>
