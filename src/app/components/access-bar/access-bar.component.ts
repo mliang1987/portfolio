@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed, Signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { MenubarModule } from 'primeng/menubar';
@@ -7,6 +7,8 @@ import { MenuItem } from 'primeng/api';
 import { BadgeModule } from 'primeng/badge';
 import { OverlayBadgeModule } from 'primeng/overlaybadge';
 import { RippleModule } from 'primeng/ripple';
+import { ProjectsService } from '../../services/projects.service';
+import { GitHubRepo } from '../../models/github.projects';
 
 @Component({
   selector: 'app-access-bar',
@@ -16,18 +18,55 @@ import { RippleModule } from 'primeng/ripple';
   styleUrl: './access-bar.component.css'
 })
 export class AccessBarComponent {
-  items: MenuItem[] = [
-    { label: 'Home', icon: 'pi pi-home', routerLink: ['/home'] },
-    {
-      label: 'Projects',
-      icon: 'pi pi-briefcase',
-      badge: '2',
-      items: [
-        { label: 'ProjectA', icon: 'pi pi-user', routerLink: ['/projects/projectA'] },
-        { label: 'ProjectB', icon: 'pi pi-lock', routerLink: ['/projects/projectB'] },
-        { label: 'ProjectC', icon: 'pi pi-cog', routerLink: ['/projects'] }
-      ]
-    },
-    { label: 'Contact', icon: 'pi pi-envelope', routerLink: ['/contact'] }
-  ];
+  items: Signal<MenuItem[]>;
+
+  private repositories: Signal<GitHubRepo[]>;
+
+  constructor(private projectsService: ProjectsService) {
+    this.repositories = computed(() => this.projectsService.repositories());
+    this.items = computed(() => this.createMenuItems());
+  }
+
+  private createMenuItems(): MenuItem[] {
+    const menuItems: MenuItem[] = [
+      {
+        label: 'Home',
+        icon: 'pi pi-home',
+        routerLink: ['/']
+      },
+      {
+        label: 'Projects',
+        icon: 'pi pi-folder',
+        badge: this.repositories().length.toString(),
+        items: this.getProjectsItems()
+      },
+      {
+        label: 'Resume',
+        icon: 'pi pi-file',
+        routerLink: ['/resume']
+      }
+    ];
+    return menuItems;
+  }
+
+  private getProjectsItems(): MenuItem[] {
+    const projects: MenuItem[] = [];
+    projects.push({
+      label: 'All Projects',
+      icon: 'pi pi-folder-open',
+      routerLink: ['/projects']
+    });
+    this.repositories().forEach((repo) => {
+      projects.push(this.parseRepositorysIntoMenuItem(repo));
+    });
+    return projects;
+  }
+
+  private parseRepositorysIntoMenuItem(repo: GitHubRepo): MenuItem {
+    return {
+      label: repo.name,
+      icon: 'pi pi-github',
+      routerLink: ['/projects', repo.id]
+    };
+  }
 }

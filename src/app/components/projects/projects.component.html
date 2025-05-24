@@ -1,6 +1,3 @@
-<p>projects works!</p>
-@if(projectId) {
-<p>Project ID: {{ projectId }}</p>
-} @else {
-<p>No Project ID provided.</p>
+@if (projectId) { <app-individual-project [projectId]="projectId"></app-individual-project>> } @else {
+<app-all-projects></app-all-projects>
 }
