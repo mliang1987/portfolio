@@ -14,8 +14,34 @@ import { RouterModule } from '@angular/router';
 })
 export class AllProjectsComponent {
   projects: Signal<GitHubRepo[]>;
+  headerImageUrl: Signal<Map<number, string | null>>;
 
   constructor(private projectsService: ProjectsService) {
     this.projects = computed(() => this.projectsService.repositories());
+    this.headerImageUrl = computed(() => {
+      const headerImageMap = new Map<number, string | null>();
+      this.projects().forEach((project) => {
+        const headerImage = this.getContentHeader(project.html_url);
+        if (headerImage) {
+          headerImageMap.set(project.id, headerImage);
+        }
+      });
+      return headerImageMap;
+    });
+  }
+
+  private getContentHeader(projectUrl: string): string | null {
+    const regex = /^https:\/\/github\.com\/mliang1987\/(.+)$/;
+    const match = projectUrl.match(regex);
+    const matchedString = match ? `https://raw.githubusercontent.com/mliang1987/${match[1]}/master/card-header.png` : null;
+    if (matchedString) {
+      const xhr = new XMLHttpRequest();
+      xhr.open('HEAD', matchedString, false);
+      xhr.send();
+      if (xhr.status !== 200) {
+        return null;
+      }
+    }
+    return matchedString;
   }
 }

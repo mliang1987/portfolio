@@ -44,6 +44,22 @@ export class AccessBarComponent {
         label: 'Resume',
         icon: 'pi pi-file',
         routerLink: ['/resume']
+      },
+      {
+        label: 'Socials',
+        icon: 'pi pi-users',
+        items: [
+          {
+            label: 'LinkedIn',
+            icon: 'pi pi-linkedin',
+            url: 'https://www.linkedin.com/in/michael-liang-14336a20/'
+          },
+          {
+            label: 'GitHub',
+            icon: 'pi pi-github',
+            url: 'https://github.com/mliang1987'
+          }
+        ]
       }
     ];
     return menuItems;

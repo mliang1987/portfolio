@@ -18,8 +18,6 @@ import { AccessBarComponent } from './components/access-bar/access-bar.component
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppComponent implements OnInit {
-  title = 'Test Change Title';
-
   constructor(private _primeng: PrimeNG) {}
 
   ngOnInit() {
