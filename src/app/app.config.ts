@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) 2025 Michael Liang.
+ * All rights reserved.
+ */
+
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';

@@ -24,7 +24,8 @@ export class AccessBarComponent {
       badge: '2',
       items: [
         { label: 'ProjectA', icon: 'pi pi-user', routerLink: ['/projects/projectA'] },
-        { label: 'ProjectB', icon: 'pi pi-lock', routerLink: ['/projects/projectB'] }
+        { label: 'ProjectB', icon: 'pi pi-lock', routerLink: ['/projects/projectB'] },
+        { label: 'ProjectC', icon: 'pi pi-cog', routerLink: ['/projects'] }
       ]
     },
     { label: 'Contact', icon: 'pi pi-envelope', routerLink: ['/contact'] }

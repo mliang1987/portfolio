@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) 2025 Michael Liang.
+ * All rights reserved.
+ */
+
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { PrimeNG } from 'primeng/config';
