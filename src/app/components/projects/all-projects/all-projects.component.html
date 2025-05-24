@@ -1,6 +1,12 @@
 <div class="projects-container">
   @for ( project of projects(); track project.id ) {
   <p-card [style]="{ width: '20rem', overflow: 'hidden' }">
+    @if (headerImageUrl().get(project.id)) {
+    <ng-template #header>
+      <img alt="Card" class="header-image" src="{{ headerImageUrl().get(project.id) }}" />
+    </ng-template>
+    }
+
     <ng-template #title> {{ project.name }} </ng-template>
     <ng-template #subtitle> {{ project.description }} </ng-template>
     <ng-template #footer>

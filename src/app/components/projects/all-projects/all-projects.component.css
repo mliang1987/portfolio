@@ -11,3 +11,11 @@
   gap: 2rem;
   margin: 2rem;
 }
+
+.header-image {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 20px;
+}

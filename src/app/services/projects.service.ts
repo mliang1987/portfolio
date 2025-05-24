@@ -20,6 +20,7 @@ export class ProjectsService {
   private loadRepos(): void {
     this._githubService.getPublicRepos('mliang1987').subscribe((repos) => {
       this.repositoriesSignal.set(repos);
+      console.table(repos);
     });
   }
 }
