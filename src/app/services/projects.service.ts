@@ -10,6 +10,7 @@ export class ProjectsService {
   algProjects: Signal<GitHubRepo[]>;
   eduProjects: Signal<GitHubRepo[]>;
   miscProjects: Signal<GitHubRepo[]>;
+  loadSignal: WritableSignal<boolean> = signal<boolean>(false);
   private repositoriesSignal: WritableSignal<GitHubRepo[]> = signal<GitHubRepo[]>([]);
   readonly repositories: Signal<GitHubRepo[]> = this.repositoriesSignal.asReadonly();
 
@@ -18,7 +19,9 @@ export class ProjectsService {
     this.algProjects = computed(() => this.repositoriesSignal().filter((repo) => repo.topics?.includes('algorithms')));
     this.eduProjects = computed(() => this.repositoriesSignal().filter((repo) => repo.topics?.includes('education')));
     this.miscProjects = computed(() =>
-      this.repositoriesSignal().filter((repo) => !repo.topics?.includes('algorithms') && !repo.topics?.includes('education'))
+      this.repositoriesSignal().filter(
+        (repo) => !repo.topics?.includes('algorithms') && !repo.topics?.includes('education')
+      )
     );
   }
 
@@ -35,7 +38,9 @@ export class ProjectsService {
   }
 
   private getRepoReadme(repoNames: string[]) {
-    const requests: Observable<string>[] = repoNames.map((repoName) => this._githubService.getRepoReadme('mliang1987', repoName));
+    const requests: Observable<string>[] = repoNames.map((repoName) =>
+      this._githubService.getRepoReadme('mliang1987', repoName)
+    );
 
     forkJoin(requests).subscribe((responses: string[]) => {
       const newRepoList: GitHubRepo[] = [];
@@ -47,6 +52,7 @@ export class ProjectsService {
         }
       });
       this.repositoriesSignal.set(newRepoList);
+      this.loadSignal.set(true);
     });
   }
 }

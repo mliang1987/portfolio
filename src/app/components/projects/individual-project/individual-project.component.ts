@@ -21,19 +21,22 @@ export class IndividualProjectComponent implements OnInit, OnChanges {
 
   constructor(private githubService: GitHubService, private projectsService: ProjectsService) {
     this.repo = computed(
-      () => this.projectsService.repositories().find((repo) => repo.id.toString() === this.projectId) || ({} as GitHubRepo)
+      () =>
+        this.projectsService.repositories().find((repo) => repo.id.toString() === this.projectId) || ({} as GitHubRepo)
     );
   }
 
   ngOnInit(): void {
     this.repo = computed(
-      () => this.projectsService.repositories().find((repo) => repo.id.toString() === this.projectId) || ({} as GitHubRepo)
+      () =>
+        this.projectsService.repositories().find((repo) => repo.id.toString() === this.projectId) || ({} as GitHubRepo)
     );
   }
 
   ngOnChanges(): void {
     this.repo = computed(
-      () => this.projectsService.repositories().find((repo) => repo.id.toString() === this.projectId) || ({} as GitHubRepo)
+      () =>
+        this.projectsService.repositories().find((repo) => repo.id.toString() === this.projectId) || ({} as GitHubRepo)
     );
   }
 }

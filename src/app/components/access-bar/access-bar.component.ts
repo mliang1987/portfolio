@@ -9,10 +9,20 @@ import { OverlayBadgeModule } from 'primeng/overlaybadge';
 import { RippleModule } from 'primeng/ripple';
 import { ProjectsService } from '../../services/projects.service';
 import { GitHubRepo } from '../../models/github.projects';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-access-bar',
-  imports: [CommonModule, MenubarModule, ButtonModule, InputTextModule, BadgeModule, OverlayBadgeModule, RippleModule],
+  imports: [
+    CommonModule,
+    MenubarModule,
+    ButtonModule,
+    InputTextModule,
+    BadgeModule,
+    OverlayBadgeModule,
+    RippleModule,
+    RouterModule
+  ],
   standalone: true,
   templateUrl: './access-bar.component.html',
   styleUrl: './access-bar.component.css'

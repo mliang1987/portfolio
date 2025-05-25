@@ -7,20 +7,32 @@ import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
 import { DividerModule } from 'primeng/divider';
 import { CommonModule } from '@angular/common';
-import { Tabs, TabsModule } from 'primeng/tabs';
+import { TabsModule } from 'primeng/tabs';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-all-projects',
   standalone: true,
-  imports: [CommonModule, PanelModule, CardModule, ButtonModule, RouterModule, DividerModule, TabsModule],
+  imports: [
+    CommonModule,
+    PanelModule,
+    CardModule,
+    ButtonModule,
+    RouterModule,
+    DividerModule,
+    TabsModule,
+    ProgressSpinnerModule
+  ],
   templateUrl: './all-projects.component.html',
   styleUrl: './all-projects.component.css'
 })
 export class AllProjectsComponent {
   projectGroupsSignal: Signal<GitHubRepo[][]>;
   headerImageUrlsMap: Signal<Map<number, string | null>>;
+  loadSignal: Signal<boolean>;
 
   constructor(private projectsService: ProjectsService) {
+    this.loadSignal = computed(() => this.projectsService.loadSignal());
     this.headerImageUrlsMap = computed(() => {
       const headerImageMap = new Map<number, string | null>();
       this.projectsService.repositories().forEach((project) => {
@@ -43,7 +55,9 @@ export class AllProjectsComponent {
   private getContentHeader(projectUrl: string): string | null {
     const regex = /^https:\/\/github\.com\/mliang1987\/(.+)$/;
     const match = projectUrl.match(regex);
-    const matchedString = match ? `https://raw.githubusercontent.com/mliang1987/${match[1]}/master/card-header.png` : null;
+    const matchedString = match
+      ? `https://raw.githubusercontent.com/mliang1987/${match[1]}/master/card-header.png`
+      : null;
     if (matchedString) {
       const xhr = new XMLHttpRequest();
       xhr.open('HEAD', matchedString, false);

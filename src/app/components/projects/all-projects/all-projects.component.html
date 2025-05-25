@@ -1,3 +1,4 @@
+@if (loadSignal()) {
 <p-tabs value="0">
   <p-tablist>
     <p-tab value="0">Machine Learning and Algorithms</p-tab>
@@ -20,7 +21,9 @@
           <ng-template #footer>
             <div class="button-container">
               <p-button [routerLink]="'/projects/' + project.id"> Go to Project </p-button>
-              <a [href]="project.html_url" class="p-button font-bold" target="_blank" rel="noopener noreferrer"> View on GitHub </a>
+              <a [href]="project.html_url" class="p-button font-bold" target="_blank" rel="noopener noreferrer">
+                View on GitHub
+              </a>
             </div>
           </ng-template>
         </p-card>
@@ -29,3 +32,9 @@
   </p-tabpanel>
   }
 </p-tabs>
+} @else {
+<div class="spinner-container">
+  <p-progress-spinner ariaLabel="loading" />
+  <span class="ellipsis">Loading repository information from GitHub</span>
+</div>
+}
