@@ -16,17 +16,10 @@ import { Tabs, TabsModule } from 'primeng/tabs';
   styleUrl: './all-projects.component.css'
 })
 export class AllProjectsComponent {
-  algProjects: Signal<GitHubRepo[]>;
-  eduProjects: Signal<GitHubRepo[]>;
-  miscProjects: Signal<GitHubRepo[]>;
+  projectGroupsSignal: Signal<GitHubRepo[][]>;
   headerImageUrlsMap: Signal<Map<number, string | null>>;
 
   constructor(private projectsService: ProjectsService) {
-    this.algProjects = computed(() => this.projectsService.repositories().filter((repo) => repo.topics?.includes('algorithms')));
-    this.eduProjects = computed(() => this.projectsService.repositories().filter((repo) => repo.topics?.includes('education')));
-    this.miscProjects = computed(() =>
-      this.projectsService.repositories().filter((repo) => !repo.topics?.includes('algorithms') && !repo.topics?.includes('education'))
-    );
     this.headerImageUrlsMap = computed(() => {
       const headerImageMap = new Map<number, string | null>();
       this.projectsService.repositories().forEach((project) => {
@@ -36,6 +29,13 @@ export class AllProjectsComponent {
         }
       });
       return headerImageMap;
+    });
+    this.projectGroupsSignal = computed(() => {
+      const projectGroups: GitHubRepo[][] = [];
+      projectGroups.push(this.projectsService.algProjects());
+      projectGroups.push(this.projectsService.eduProjects());
+      projectGroups.push(this.projectsService.miscProjects());
+      return projectGroups;
     });
   }
 
