@@ -4,7 +4,7 @@
     <p-tab value="1">Projects for Education</p-tab>
     <p-tab value="2">Others</p-tab>
   </p-tablist>
-  @for ( projectList of [algProjects(), eduProjects(), miscProjects()]; track $index; let i = $index) {
+  @for ( projectList of projectGroupsSignal(); track $index; let i = $index) {
   <p-tabpanel value="{{ i }}">
     <div class="projects-container">
       <ng-container *ngFor="let project of projectList">

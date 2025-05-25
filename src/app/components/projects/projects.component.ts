@@ -6,6 +6,7 @@ import { IndividualProjectComponent } from './individual-project/individual-proj
 
 @Component({
   selector: 'app-projects',
+  standalone: true,
   imports: [AllProjectsComponent, IndividualProjectComponent],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.css'

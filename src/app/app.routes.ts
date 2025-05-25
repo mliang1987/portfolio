@@ -12,8 +12,11 @@ import { ContactComponent } from './components/contact/contact.component';
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'projects', component: ProjectsComponent },
-  { path: 'projects/:projectId', component: ProjectsComponent },
+  { path: 'projects', loadComponent: () => import('./components/projects/projects.component').then((m) => m.ProjectsComponent) },
+  {
+    path: 'projects/:projectId',
+    loadComponent: () => import('./components/projects/projects.component').then((m) => m.ProjectsComponent)
+  },
   { path: 'resume', component: ResumeComponent },
   { path: 'contact', component: ContactComponent }
 ];

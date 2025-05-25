@@ -11,6 +11,7 @@ import { providePrimeNG } from 'primeng/config';
 import { routes } from './app.routes';
 import { MyPreset } from '../globals/prime.preset';
 import { provideHttpClient } from '@angular/common/http';
+import { CLIPBOARD_OPTIONS, ClipboardButtonComponent, provideMarkdown } from 'ngx-markdown';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,6 +26,14 @@ export const appConfig: ApplicationConfig = {
           prefix: 'p',
           darkModeSelector: 'system',
           cssLayer: false
+        }
+      }
+    }),
+    provideMarkdown({
+      clipboardOptions: {
+        provide: CLIPBOARD_OPTIONS,
+        useValue: {
+          buttonComponent: ClipboardButtonComponent
         }
       }
     })

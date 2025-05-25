@@ -37,8 +37,32 @@ export class AccessBarComponent {
       {
         label: 'Projects',
         icon: 'pi pi-folder',
-        badge: this.repositories().length.toString(),
-        items: this.getProjectsItems()
+        badge: this.projectsService.repositories().length.toString(),
+        items: [
+          {
+            label: 'All Projects',
+            icon: 'pi pi-folder-open',
+            routerLink: ['/projects']
+          },
+          {
+            label: 'Machine Learning and Algorithms',
+            icon: 'pi pi-github',
+            items: this.getProjectsItems(this.projectsService.algProjects()),
+            badge: this.projectsService.algProjects().length.toString()
+          },
+          {
+            label: 'Projects for Education',
+            icon: 'pi pi-github',
+            items: this.getProjectsItems(this.projectsService.eduProjects()),
+            badge: this.projectsService.eduProjects().length.toString()
+          },
+          {
+            label: 'Others',
+            icon: 'pi pi-github',
+            items: this.getProjectsItems(this.projectsService.miscProjects()),
+            badge: this.projectsService.miscProjects().length.toString()
+          }
+        ]
       },
       {
         label: 'Résumé',
@@ -65,14 +89,9 @@ export class AccessBarComponent {
     return menuItems;
   }
 
-  private getProjectsItems(): MenuItem[] {
+  private getProjectsItems(repos: GitHubRepo[]): MenuItem[] {
     const projects: MenuItem[] = [];
-    projects.push({
-      label: 'All Projects',
-      icon: 'pi pi-folder-open',
-      routerLink: ['/projects']
-    });
-    this.repositories().forEach((repo) => {
+    repos.forEach((repo) => {
       projects.push(this.parseRepositorysIntoMenuItem(repo));
     });
     return projects;

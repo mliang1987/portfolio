@@ -6,8 +6,9 @@ import { GitHubRepo } from '../models/github.projects';
 @Injectable({
   providedIn: 'root'
 })
-export class GithubService {
+export class GitHubService {
   private baseUrl = 'https://api.github.com/users';
+  private reposUrl = 'https://api.github.com/repos';
 
   constructor(private http: HttpClient) {}
 
@@ -22,6 +23,12 @@ export class GithubService {
             return new GitHubRepo(filteredRepo);
           })
       )
+    );
+  }
+
+  getRepoReadme(username: string, repoName: string): Observable<string> {
+    return this.http.get<{ content: string }>(`${this.reposUrl}/${username}/${repoName}/readme`).pipe(
+      map((response) => atob(response.content)) // Decode Base64
     );
   }
 }

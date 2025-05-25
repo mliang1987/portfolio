@@ -11,6 +11,7 @@ export class GitHubRepo {
   created_at!: string;
   updated_at!: string;
   topics!: string[] | null;
+  readmeContent!: string | null;
 
   constructor(init?: Partial<GitHubRepo>) {
     Object.assign(this, init);
