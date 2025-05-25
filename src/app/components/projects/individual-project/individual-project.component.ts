@@ -1,4 +1,4 @@
-import { Component, computed, effect, Input, OnChanges, OnInit, Signal } from '@angular/core';
+import { Component, computed, Input, OnChanges, Signal } from '@angular/core';
 import { MarkdownModule } from 'ngx-markdown';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
@@ -14,29 +14,28 @@ import { Divider } from 'primeng/divider';
   templateUrl: './individual-project.component.html',
   styleUrl: './individual-project.component.css'
 })
-export class IndividualProjectComponent implements OnInit, OnChanges {
+export class IndividualProjectComponent implements OnChanges {
   @Input() projectId: string | null = null;
 
   repo: Signal<GitHubRepo>;
 
   constructor(private githubService: GitHubService, private projectsService: ProjectsService) {
-    this.repo = computed(
-      () =>
-        this.projectsService.repositories().find((repo) => repo.id.toString() === this.projectId) || ({} as GitHubRepo)
-    );
-  }
-
-  ngOnInit(): void {
-    this.repo = computed(
-      () =>
-        this.projectsService.repositories().find((repo) => repo.id.toString() === this.projectId) || ({} as GitHubRepo)
-    );
+    this.repo = computed(() => {
+      return this.findInMergedReposSet();
+    });
   }
 
   ngOnChanges(): void {
-    this.repo = computed(
-      () =>
-        this.projectsService.repositories().find((repo) => repo.id.toString() === this.projectId) || ({} as GitHubRepo)
+    this.repo = computed(() => {
+      return this.findInMergedReposSet();
+    });
+  }
+
+  findInMergedReposSet(): GitHubRepo {
+    const repositories = this.projectsService.repositories();
+    const openProjects = this.projectsService.openProjects();
+    return (
+      [...repositories, ...openProjects].find((repo) => repo.id.toString() === this.projectId) || ({} as GitHubRepo)
     );
   }
 }

@@ -46,6 +46,7 @@ export class AllProjectsComponent {
     this.projectGroupsSignal = computed(() => {
       const projectGroups: GitHubRepo[][] = [];
       projectGroups.push(this.projectsService.algProjects());
+      projectGroups.push(this.projectsService.openProjects());
       projectGroups.push(this.projectsService.eduProjects());
       projectGroups.push(this.projectsService.miscProjects());
       return projectGroups;
