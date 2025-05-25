@@ -11,6 +11,7 @@ import { Tabs, TabsModule } from 'primeng/tabs';
 
 @Component({
   selector: 'app-all-projects',
+  standalone: true,
   imports: [CommonModule, PanelModule, CardModule, ButtonModule, RouterModule, DividerModule, TabsModule],
   templateUrl: './all-projects.component.html',
   styleUrl: './all-projects.component.css'
