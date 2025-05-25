@@ -1,0 +1,8 @@
+.mark-down-container {
+  width: 100%;
+}
+
+::ng-deep markdown img {
+  max-width: 100%;
+  height: auto;
+}

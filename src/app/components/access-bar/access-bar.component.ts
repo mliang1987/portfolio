@@ -47,7 +47,7 @@ export class AccessBarComponent {
       {
         label: 'Projects',
         icon: 'pi pi-folder',
-        badge: this.projectsService.repositories().length.toString(),
+        badge: (this.projectsService.repositories().length + this.projectsService.openProjects().length).toString(),
         items: [
           {
             label: 'All Projects',
@@ -59,6 +59,12 @@ export class AccessBarComponent {
             icon: 'pi pi-github',
             items: this.getProjectsItems(this.projectsService.algProjects()),
             badge: this.projectsService.algProjects().length.toString()
+          },
+          {
+            label: 'Open Source Projects',
+            icon: 'pi pi-github',
+            items: this.getProjectsItems(this.projectsService.openProjects()),
+            badge: this.projectsService.openProjects().length.toString()
           },
           {
             label: 'Projects for Education',
