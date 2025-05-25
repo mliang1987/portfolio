@@ -6,7 +6,7 @@
   "singleQuote": true,
   "bracketSpacing": true,
   "endOfLine": "lf",
-  "printWidth": 135,
+  "printWidth": 120,
   "brace-style": "stroustrup",
   "bracketSameLine": false,
   "arrowParens": "always"
