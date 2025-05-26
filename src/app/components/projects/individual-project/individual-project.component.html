@@ -4,10 +4,20 @@
   <p>
     <b>Repository: </b><a [href]="repo().html_url" target="_blank">{{ repo().html_url }}</a>
   </p>
+  <p><b>Id: </b>{{ repo().id }}</p>
 </p-card>
 @if( repo().readmeContent){
 <p-divider></p-divider>
-<p-card header="Readme from GitHub">
-  <markdown class="mark-down-container" [data]="repo().readmeContent"></markdown>
+<p-card>
+  <p-fieldset
+    legend="Click to view ReadMe from GitHub"
+    #readmeFieldset
+    [collapsed]="collapsed()"
+    (click)="toggleCollapse()"
+  >
+    @if( !collapsed()){
+    <markdown class="mark-down-container" [data]="repo().readmeContent"></markdown>
+    }
+  </p-fieldset>
 </p-card>
 }
