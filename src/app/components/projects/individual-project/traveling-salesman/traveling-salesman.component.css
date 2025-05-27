@@ -1,0 +1,14 @@
+.image-container {
+  width: 50%;
+  height: auto;
+  object-fit: scale-down;
+  margin: 0 auto; /* Centers the element horizontally */
+  display: block; /* Ensures it behaves as a block-level element */
+}
+
+.pdf-container {
+  width: 80%;
+  height: 100vw;
+  margin: 0 auto; /* Centers the element horizontally */
+  display: block; /* Ensures it behaves as a block-level element */
+}

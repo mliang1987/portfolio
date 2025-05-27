@@ -1,1 +1,217 @@
-<p>traveling-salesman works!</p>
+<p>
+  The <b>Traveling Salesman Problem (TSP)</b> is a renowned and well-studied NP-Hard optimization problem with
+  applications in resource allocation, electronics, astronomy, and DNA sequencing. In short, the problem is about
+  finding a shortest tour that visits every city and returns to the starting point given a set of cities and a pairwise
+  distance function.
+</p>
+<p>
+  There are no known polynomial-time solutions to the TSP problem, and the only known exact solutions are either
+  exponential or factorial in <i>n</i>, or the number of cities. However, many heuristics, approximations, and iterative
+  improvement algorithms have been developed that provide solutions that often sacrifice quality for speed. In this
+  project, my team of 4 explored the branch-and-bound algorithm, a minimum-spanning-tree (MST) approximation with
+  guarantee, and two local search algorithms, namely, simulated annealing and a genetic algorithm for the metric TSP. In
+  this portfolio overview, I will discuss my implementation of the simulated annealing metaheuristic.
+</p>
+<p-fieldset legend="Formal Definition">
+  <p>
+    Given the <i>x-y</i> coordinates of N points in the plane, and a cost function <i>c(x, y)</i> defined for every pair
+    of points, find the shortest simple cycle that visits all <i>N</i> points. Assume that all edge costs are symmetric
+    and satisfy the triangle inequality.
+  </p>
+</p-fieldset>
+<br />
+<div>
+  <iframe src="assets/files/CSE6140_Final_Project.pdf" width="100%" class="pdf-container"></iframe>
+</div>
+<p-card header="A Brief Overview of Simulated Annealing">
+  <p>
+    First proposed by
+    <a href="https://science.sciencemag.org/content/220/4598/671" target="_blank">Kirkpatrick et al. in 1983</a>, the
+    technique draws inspiration from the physical process of annealing in metallurgy. Simulate annealing slowly
+    decreases the probability of accepting worse solutions during search. As a result, simulated annealing can move out
+    of local minima while the temperature is still high, but will eventually settle as the temperature cools according
+    to a cooling schedule.
+  </p>
+  <p>
+    Specifically, simulated annealing probabilistically decides to move from a solution <b>s</b> to candidate neighbor
+    solution <i>s’</i> in order to minimize the thermodynamic energy of the system. This iterative process stops once an
+    optimal solution is found, or until a computational budget is exceeded. In general, the probability that simulated
+    annealing terminates with the global minima converges to 1 as the cooling schedule is lengthened, as proven by
+    <a href="https://ieeexplore.ieee.org/document/295910" target="_blank">Granville et al. in 1994</a>. Practically, the
+    time required for such a cooling schedule will exceed that required of deterministic solutions such as
+    branch-and-bound.
+  </p>
+  <p>
+    Once Kirkpatrick et al.'s seminal paper on the metaheuristic was published, it was then immediately applied to TSP
+    by
+    <a
+      href="https://www.semanticscholar.org/paper/Optimization-by-simulated-annealing%3A-A-preliminary-Skiscim-Golden/2c050e0719470f2c9284997fa859242c3cdc066b"
+      target="_blank"
+      >Skiscim and Golden</a
+    >
+    in the same year. In 1988,
+    <a href="https://link.springer.com/article/10.1007/BF01022991" target="_blank_">Aarts et al.</a> presented a
+    quantitative analysis of the results obtained by the simulated annealing strategy, modeling the statistical
+    properties of obtained results as a function of the parameters of the cooling schedule. More recently,
+    <a href="https://www.sciencedirect.com/science/article/abs/pii/S1568494611000573" target="_blank">Geng et al.</a>
+    proposed the use of a greedy search heuristic to speed up the convergence rate in 2011.
+  </p>
+</p-card>
+<p-card header="Implementation of Simulated Annealing with Restarts">
+  <p>
+    For our implementation of the simulated annealing algorithm to the metric TSP problem, each candidate solution is a
+    valid tour which covers all vertices and returns to the origin. Alternatively, it can be thought of as a
+    <a href="https://en.wikipedia.org/wiki/Hamiltonian_path#The_Hamiltonian_cycle_polynomial" target="_blank"
+      >Hamiltonian Cycle</a
+    >
+    for a given graph. In addition, we define the fitness of a candidate solution as the tour length. At the start of
+    the annealing process, we:
+  </p>
+  <ul>
+    <li>
+      <b>Generate an initial candidate tour:</b> For our implementation, we generate an initial tour using the Nearest
+      Neighbors Heuristic (See Figure 1).
+    </li>
+    <li><b>Determine a high initial temperature:</b> Typically, this is 1e10 to 1e30.</li>
+    <li><b>Determine a stopping temperature:</b> We used values between 1e-2 and 1e-8.</li>
+    <li>
+      <b>Determine a cooling schedule:</b> For our implementation, we used a geometric series with factor
+      <i>α = 0.999</i>.
+    </li>
+  </ul>
+  <p>
+    During the annealing step, we iteratively generate new candidate solutions by selecting two random cities on the
+    tour (with the exception of the starting city), and then reverse the sub-tour between these two cities (See Figure
+    2). The goal of this candidate generation is to reduce any local crossovers in tour paths. We then evaluate this new
+    candidate solution for fitness, accepting it if its fitness is strictly better than that of the currently-accepted
+    solution. However, if the fitness isn’t better, we will accept the candidate solution anyway with a probability
+    based on the temperature (See Figure 3).
+  </p>
+  <p-card>
+    <ng-container>
+      <ng-template #header>
+        <img alt="Card" class="image-container" src="assets/images/traveling-salesman\TSP_NN_Pseudo.png" />
+      </ng-template>
+    </ng-container>
+    <ng-template #title>
+      <div style="text-align: center">Figure 1: Nearest-neighbors heuristic algorithm</div>
+    </ng-template>
+  </p-card>
+  <p-card>
+    <ng-container>
+      <ng-template #header>
+        <img alt="Card" class="image-container" src="assets/images/traveling-salesman\TSP_GN_Pseudo.png" />
+      </ng-template>
+    </ng-container>
+    <ng-template #title>
+      <div style="text-align: center">Figure 2: Generate candidate neighbor via 2-swap</div>
+    </ng-template>
+  </p-card>
+  <p-card>
+    <ng-container>
+      <ng-template #header>
+        <img alt="Card" class="image-container" src="assets/images/traveling-salesman\TSP_SA_Prob.png" />
+      </ng-template>
+    </ng-container>
+    <ng-template #title>
+      <div style="text-align: center">
+        Figure 3: Accept worse candidate solution using <i>f(s)</i>, the fitness function for a candidate solution
+      </div>
+    </ng-template>
+  </p-card>
+  <p>
+    As we are considering candidate solutions, we are also keeping track of the best solution seen thus far, updating it
+    if ever our candidate is better. At the end of the annealing step, we reduce the temperature according to the
+    cooling schedule, and repeat the process until we reach the stopping temperature (See Figure 4).
+  </p>
+  <p-card>
+    <ng-container>
+      <ng-template #header>
+        <img alt="Card" class="image-container" src="assets/images/traveling-salesman\TSP_SA_Pseudo.png" />
+      </ng-template>
+    </ng-container>
+    <ng-template #title>
+      <div style="text-align: center">Figure 4: Pseudo-code for simulated annealing</div>
+    </ng-template>
+  </p-card>
+  <p>
+    However, one iteration of the annealing process is not guaranteed to converge to the global optimum, since we employ
+    a discrete cooling schedule. In addition, as mentioned above, while we can guarantee optimal quality by infinitely
+    lengthening the cooling schedule, this is simply unfeasible. Therefore, we implement restarts whenever our
+    temperature falls to the stopping temperature thresholds. For each restart, we lengthen the cooling schedule, and
+    then restart the annealing algorithm, using the previously generated best tour as the initial tour for the new
+    annealing process.
+  </p>
+  <p>
+    Furthermore, if we detect that subsequent restarts are not generating different results, we will also randomly
+    restart with a new initial tour for the annealing process, while concurrently keeping track of the global best found
+    by all prior annealing processes. This helps us move out of local minima for larger graphs (<i>n>50</i>).
+  </p>
+</p-card>
+<p-card header="Time and Space Complexity">
+  <p>
+    Let <i>n</i> be the number of cities. We will proceed with our analysis by investigating the components of our
+    algorithm:
+  </p>
+  <ul>
+    <li>
+      <b>Generate initial tour:</b> Looking at the implementation of our nearest-neighbor greedy heuristic, which we
+      used to generate an initial tour. Then, our time complexity is <i>O(n^2)</i> and our space complexity is
+      <i>O(n)</i>.
+    </li>
+    <li>
+      <b>Getting a neighboring candidate solution:</b> Picking two random indices and reversing the order of the tour
+      path between them yields time complexity of <i>O(n)</i> and space complexity of <i>O(n)</i>.
+    </li>
+    <li>
+      <b>Each anneal step:</b> Each anneal step acquires a neighbor, but then each other step is constant time, with the
+      exception of the fitness function, which requires time complexity of <i>O(n)</i>. Space complexity is still
+      constrained by the acquisition of a candidate solution, with<i>O(n)</i>.
+    </li>
+    <li>
+      <b>Annealing Loop:</b> However, the loop of the anneal step is the determining factor, as the number of iterations
+      <i>m</i> of the geometric cooling schedule is determined by <i>Ts</i>, <i>T0</i> and <i>α</i>. In fact, using the
+      formula for a geometric series, we can conclude that this reduces to a time-complexity of
+      <i>O(m) = O(log Ts - log T0)</i>.
+    </li>
+  </ul>
+  <p>
+    Thus, overall, for each iteration of the annealing process, the algorithm exhibits time complexity<i>O(n)</i> and
+    space complexity <i>O(n)</i>, but this occurs for <i>O(m) = O(log T_s - log T_0)</i> iterations, which means our
+    overall time complexity is <i>O(n^2 + n(log T_s - log T_0))</i> for the initial nearest neighbor candidate and the
+    annealing process, respectively. Note, this is complicated by the restart implementation. Overall space complexity
+    is still <i>O(n)</i>.
+  </p>
+</p-card>
+<p-card header="Results and Comparison with Other Algorithms">
+  <p>
+    In this section, we present runtimes and quality for the simulated annealing algorithm in comparison to the other
+    algorithms investigated. Each of the following tables represent 10 runs of each algorithm on 13 variable-size data
+    sets (locations within a city). Average runtimes and average quality error over optimal over all 10 runs are shown.
+    Since the branch-and-bound algorithm will find the optimal solution at the cost of exponentially-increasing runtime,
+    we set a cutoff-time of 10 minutes (in fact, setting an overnight run of 6 hours generated optimal solutions for
+    only the smallest data sets). For all other algorithms, approximation or local search, we set a cutoff-time of 1
+    minute.
+  </p>
+</p-card>
+<div class="card">
+  <p-galleria
+    [value]="images"
+    [autoPlay]="true"
+    [circular]="true"
+    [showThumbnails]="false"
+    [showIndicators]="true"
+    [showItemNavigatorsOnHover]="true"
+    [circular]="true"
+    [responsiveOptions]="responsiveOptions"
+    [containerStyle]="{ 'max-width': '640px' }"
+  >
+    <ng-template #item let-item>
+      <img [src]="item.itemImageSrc" style="width: 100%; display: block" />
+    </ng-template>
+    <ng-template #footer>
+      <h3>Test</h3>
+      <p>Test</p>
+    </ng-template>
+  </p-galleria>
+</div>
