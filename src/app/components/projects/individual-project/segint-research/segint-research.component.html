@@ -1,1 +1,23 @@
-<p>segint-research works!</p>
+<p>
+  SegInt-Research is an <b>on-premise auto-segmentation transaction server</b> designed for research institutions
+  working with machine learning models. It integrates with <b>Velocity</b>, Varian's bioinformatics solution, to
+  consolidate imaging data from various sources. The server operates <b>locally</b>, allowing research teams to develop
+  and test their own segmentation models without relying on cloud-based services.
+</p>
+<p>The architecture of SegInt-Research includes:</p>
+<ul>
+  <li><b>Communication via Microsoft Radiomics Segmentation API</b> (Project InnerEye).</li>
+  <li><b>Message serialization using Google's protocol buffers</b>.</li>
+  <li><b>Django-based endpoints</b> with SQLite as a shared data layer.</li>
+  <li><b>Asynchronous segmentation jobs</b> managed by Celery, with Redis as a message broker.</li>
+</ul>
+<p>
+  SegInt-Research is <b>Linux-native</b>, developed on <b>Ubuntu 18.04 LTS</b>, and can be installed manually or
+  virtualized using <b>Hyper-V or VirtualBox</b>. It requires network access, at least 15GB of disk space, and 2GB of
+  memory to function properly.
+</p>
+<p>
+  SegInt-Research was a developed as a project solely by me for my internship at Varian. It is also now used internally
+  by the Varian testing team to test the Velocity software against a SegInt-compliant service provider. More detailed
+  information can be found in the GitHub readme below.
+</p>

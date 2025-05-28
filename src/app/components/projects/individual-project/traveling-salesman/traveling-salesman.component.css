@@ -9,8 +9,9 @@
 }
 
 .pdf-container {
-  width: 80%;
+  width: calc(100% - 20px);
   height: 100vw;
   margin: 0 auto; /* Centers the element horizontally */
   display: block; /* Ensures it behaves as a block-level element */
+  max-width: 90%; /* Default max-width */
 }
