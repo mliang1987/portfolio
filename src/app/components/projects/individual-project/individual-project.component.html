@@ -4,10 +4,33 @@
   <p>
     <b>Repository: </b><a [href]="repo().html_url" target="_blank">{{ repo().html_url }}</a>
   </p>
+  <p><b>Id: </b>{{ repo().id }}</p>
 </p-card>
-@if( repo().readmeContent){
+
+@if ( hasMoreDetails() ) {
 <p-divider></p-divider>
-<p-card header="Readme from GitHub">
-  <markdown class="mark-down-container" [data]="repo().readmeContent"></markdown>
+<p-card>
+  <ng-container [ngSwitch]="projectId">
+    <app-traveling-salesman *ngSwitchCase="'228291664'"></app-traveling-salesman>
+    <app-game-of-life *ngSwitchCase="'235855332'"></app-game-of-life>
+    <app-shades-of-green *ngSwitchCase="'315426661'"></app-shades-of-green>
+    <app-segint-research *ngSwitchCase="'358282890'"></app-segint-research>
+    <app-velocity-engine *ngSwitchCase="'142626249'"></app-velocity-engine>
+  </ng-container>
+</p-card>
+
+} @if( repo().readmeContent ){
+<p-divider></p-divider>
+<p-card>
+  <p-fieldset
+    legend="Click to view ReadMe from GitHub"
+    #readmeFieldset
+    [collapsed]="collapsed()"
+    (click)="toggleCollapse()"
+  >
+    @if( !collapsed()){
+    <markdown class="mark-down-container" [data]="repo().readmeContent"></markdown>
+    }
+  </p-fieldset>
 </p-card>
 }
